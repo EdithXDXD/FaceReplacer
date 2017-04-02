@@ -206,10 +206,13 @@ public class MainActivity extends AppCompatActivity {
                 thisFaceCoordinate.eyebrowRightOuterX = face.faceLandmarks.eyebrowRightOuter.x;
                 thisFaceCoordinate.eyebrowRightOuterY = face.faceLandmarks.eyebrowLeftOuter.y;
 
+
                 thisFaceCoordinate.mouthLeftX = face.faceLandmarks.mouthLeft.x;
                 thisFaceCoordinate.mouthLeftY = face.faceLandmarks.mouthLeft.y;
                 thisFaceCoordinate.mouthRightX = face.faceLandmarks.mouthRight.x;
                 thisFaceCoordinate.mouthRightY = face.faceLandmarks.mouthRight.y;
+                thisFaceCoordinate.noseTipX = face.faceLandmarks.noseTip.x;
+                thisFaceCoordinate.noseTipY = face.faceLandmarks.noseTip.y;
 
                 thisFaceCoordinate.underLipBottomX = face.faceLandmarks.underLipBottom.x;
                 thisFaceCoordinate.underLipBottomY = face.faceLandmarks.underLipBottom.y;
@@ -218,23 +221,32 @@ public class MainActivity extends AppCompatActivity {
                 faceCoordinatesVector.add(thisFaceCoordinate);
                 Path path = new Path();
                 /*Chop out the face*/
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX ),
-                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY));
-                float middleX = (Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX)+
-                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY))/2;
-                float topY =   Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY)+20;
-                path.lineTo(middleX,topY);
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowRightOuterX ),
-                        Float.parseFloat(""+thisFaceCoordinate.eyebrowRightOuterY));
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.mouthRightX ),
-                        Float.parseFloat(""+thisFaceCoordinate.mouthRightY));
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.underLipBottomX ),
-                        Float.parseFloat(""+thisFaceCoordinate.underLipBottomY));
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.mouthLeftX ),
-                        Float.parseFloat(""+thisFaceCoordinate.mouthLeftY));
-                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX ),
-                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY));
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY));
+//                float middleX = (Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX)+
+//                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY))/2;
+//                float topY =   Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY)+20;
+//                path.lineTo(middleX,topY);
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowRightOuterX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.eyebrowRightOuterY));
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.mouthRightX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.mouthRightY));
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.underLipBottomX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.underLipBottomY));
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.mouthLeftX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.mouthLeftY));
+//                path.lineTo(Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterX ),
+//                        Float.parseFloat(""+thisFaceCoordinate.eyebrowLeftOuterY));
+                float left;
+                float top;
+                float right;
+                float bottom;
 
+                RectF rectF = new RectF( (float)(thisFaceCoordinate.eyebrowLeftInnerX)-200,
+                        (float)(thisFaceCoordinate.eyebrowLeftInnerY)-100,
+                        (float)(thisFaceCoordinate.eyebrowRightOuterX),
+                        (float)(thisFaceCoordinate.underLipBottomY)+100);
+                path.addOval(rectF,Path.Direction.CCW);
                 facePaths.add(path);
             }
         }
@@ -299,8 +311,21 @@ public class MainActivity extends AppCompatActivity {
             canvas.drawBitmap(cropped_bitmap_2, -one_to_two_x, -one_to_two_y, null);
             // Now cropped_bitmap is a transparent version
 
+
             canvas.translate(0, 200);
+
+
+
         }
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+        p.setColor(Color.RED);
+        p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(5);
+
+        RectF rectF = new RectF(500, 200, 1000, 800);
+        canvas.drawOval(rectF, p);
+
         return bitmap;
     }
 
@@ -310,11 +335,11 @@ public class MainActivity extends AppCompatActivity {
          FaceCoordinates face1C =  faceCoordinatesVector.get(p1);
         FaceCoordinates face2C =  faceCoordinatesVector.get(p2);
         // 1 move to 2
-        double x1 = face2C.eyebrowLeftOuterX - face1C.eyebrowLeftOuterX;
-        double y1 = face2C.eyebrowLeftOuterY - face1C.eyebrowLeftOuterY;
+        double x1 = face2C.noseTipX - face1C.noseTipX;
+        double y1 = face2C.noseTipY - face1C.noseTipY;
         //2 move to 1
-        double x2 = face1C.eyebrowLeftOuterX - face2C.eyebrowLeftOuterX;
-        double y2 = face1C.eyebrowLeftOuterY - face2C.eyebrowLeftOuterY;
+        double x2 = face1C.noseTipX - face2C.noseTipX;
+        double y2 = face1C.noseTipY - face2C.noseTipY;
 
         movePic(face1,background,x1,y1);
         movePic(face2,background,x2,y2);

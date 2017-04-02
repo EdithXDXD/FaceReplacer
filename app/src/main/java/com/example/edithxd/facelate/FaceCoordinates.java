@@ -24,5 +24,7 @@ public class FaceCoordinates {
     public double underLipBottomX;
     public double underLipBottomY;
 
+    public double noseTipX;
+    public double noseTipY;
 
 }
