@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:id="@+id/imageView1"
-        android:layout_above="@+id/button1" />
+        android:layout_above="@+id/button1"
+        android:paddingBottom="16dp"
+        />
 
     <Button
         android:layout_width="match_parent"
@@ -22,6 +24,7 @@
         android:text="Change Face!"
         android:id="@+id/button1"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/holo_blue_light"/>
+        android:background="@android:color/holo_orange_light"
+        android:textColor= "@android:color/white"/>
 
 </RelativeLayout>
