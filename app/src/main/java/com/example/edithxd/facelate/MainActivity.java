@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Bitmap drawFaceRectanglesOnBitmap(Bitmap originalBitmap, Face[] faces) {
         Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap bitmap1 = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -227,15 +227,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Path extraFacePath = new Path();
-        for (int i=0; i<facePaths.size();++i){
-            extraFacePath.addPath(facePaths.get(i));
-        }
+        extraFacePath = facePaths.get(0); //TEMPORARY
+        //for (int i=0; i<facePaths.size();++i){
+        //    extraFacePath.addPath(facePaths.get(i));
+        //}
+
         extraFacePath.setFillType(Path.FillType.INVERSE_EVEN_ODD);
+
+        Bitmap cropped_bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas cropped_canvas = new Canvas(cropped_bitmap);
+
+        paint.setColor(Color.TRANSPARENT);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
         paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
-       // paint.setARGB(0,0,0,0);
-        paint.setColor(Color.BLACK);
-        canvas.drawPath(extraFacePath,paint);
+        cropped_canvas.drawPath(extraFacePath,paint);
+
+        // Converting from black to alpha
+        int [] all_old_pixels = new int[cropped_bitmap.getHeight()*cropped_bitmap.getWidth()];
+        int [] all_background_pixels = new int[bitmap.getHeight()*bitmap.getWidth()];
+        cropped_bitmap.getPixels(all_old_pixels, 0, cropped_bitmap.getWidth(), 0, 0, cropped_bitmap.getWidth(), cropped_bitmap.getHeight());
+        bitmap.getPixels(all_background_pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        Log.e("hongji","bit: "+bitmap.getHeight()+"cropped"+cropped_bitmap.getHeight());
+        for (int i = 0; i < all_old_pixels.length; i++)
+        {
+            int oldLocation = i+500*bitmap.getWidth()+500;
+            if(all_old_pixels[i] == Color.BLACK) {
+                if (oldLocation < all_background_pixels.length) {
+                    all_old_pixels[i] = all_background_pixels[oldLocation];
+                }
+            }
+        }
+        cropped_bitmap.setPixels(all_old_pixels, 0, cropped_bitmap.getWidth(), 0, 0, cropped_bitmap.getWidth(), cropped_bitmap.getHeight());
+        canvas.drawBitmap(cropped_bitmap, 500, 500, null);
+
+        // Now cropped_bitmap is a transparent version
 
 
 
