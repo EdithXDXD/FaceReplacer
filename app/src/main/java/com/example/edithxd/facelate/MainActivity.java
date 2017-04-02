@@ -239,70 +239,68 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        
-        Path FacePath1 = new Path();
-        FacePath1 = facePaths.get(0); //TO_DO
+        if (facePaths.size()>1) {
+            Path FacePath1 = new Path();
+            FacePath1 = facePaths.get(0); //TO_DO
 
-        int one_to_two_x = (int) (faceCoordinatesVector.get(1).eyebrowLeftOuterX - faceCoordinatesVector.get(0).eyebrowLeftOuterX);
-        int one_to_two_y = (int) (faceCoordinatesVector.get(1).eyebrowLeftOuterY - faceCoordinatesVector.get(0).eyebrowLeftOuterY);
+            int one_to_two_x = (int) (faceCoordinatesVector.get(1).eyebrowLeftOuterX - faceCoordinatesVector.get(0).eyebrowLeftOuterX);
+            int one_to_two_y = (int) (faceCoordinatesVector.get(1).eyebrowLeftOuterY - faceCoordinatesVector.get(0).eyebrowLeftOuterY);
 
-        FacePath1.setFillType(Path.FillType.INVERSE_EVEN_ODD);
-        Bitmap cropped_bitmap_1 = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas cropped_canvas_1 = new Canvas(cropped_bitmap_1);
-        paint.setColor(Color.BLACK);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
-        paint.setAntiAlias(true);
-        cropped_canvas_1.drawPath(FacePath1,paint);
-        int [] all_old_pixels = new int[cropped_bitmap_1.getHeight()*cropped_bitmap_1.getWidth()];
-        int [] all_background_pixels = new int[bitmap.getHeight()*bitmap.getWidth()];
-        cropped_bitmap_1.getPixels(all_old_pixels, 0, cropped_bitmap_1.getWidth(), 0, 0, cropped_bitmap_1.getWidth(), cropped_bitmap_1.getHeight());
-        bitmap.getPixels(all_background_pixels, 0,  bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-        for (int i = 0; i < all_old_pixels.length; i++)
-        {
-            int  oldLocation = (int)(i+one_to_two_y*bitmap.getWidth()+one_to_two_x);
-            if(all_old_pixels[i] == Color.BLACK) {
-                if (oldLocation < all_background_pixels.length && oldLocation >= 0) {
-                    all_old_pixels[i] = all_background_pixels[oldLocation];
+            FacePath1.setFillType(Path.FillType.INVERSE_EVEN_ODD);
+            Bitmap cropped_bitmap_1 = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            Canvas cropped_canvas_1 = new Canvas(cropped_bitmap_1);
+            paint.setColor(Color.BLACK);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
+            paint.setAntiAlias(true);
+            cropped_canvas_1.drawPath(FacePath1, paint);
+            int[] all_old_pixels = new int[cropped_bitmap_1.getHeight() * cropped_bitmap_1.getWidth()];
+            int[] all_background_pixels = new int[bitmap.getHeight() * bitmap.getWidth()];
+            cropped_bitmap_1.getPixels(all_old_pixels, 0, cropped_bitmap_1.getWidth(), 0, 0, cropped_bitmap_1.getWidth(), cropped_bitmap_1.getHeight());
+            bitmap.getPixels(all_background_pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+            for (int i = 0; i < all_old_pixels.length; i++) {
+                int oldLocation = (int) (i + one_to_two_y * bitmap.getWidth() + one_to_two_x);
+                if (all_old_pixels[i] == Color.BLACK) {
+                    if (oldLocation < all_background_pixels.length && oldLocation >= 0) {
+                        all_old_pixels[i] = all_background_pixels[oldLocation];
+                    }
                 }
             }
-        }
-        cropped_bitmap_1.setPixels(all_old_pixels, 0, cropped_bitmap_1.getWidth(), 0, 0, cropped_bitmap_1.getWidth(), cropped_bitmap_1.getHeight());
+            cropped_bitmap_1.setPixels(all_old_pixels, 0, cropped_bitmap_1.getWidth(), 0, 0, cropped_bitmap_1.getWidth(), cropped_bitmap_1.getHeight());
 
-        canvas.drawBitmap(cropped_bitmap_1, one_to_two_x, one_to_two_y, null);
+            canvas.drawBitmap(cropped_bitmap_1, one_to_two_x, one_to_two_y, null);
 
-        Path FacePath2 = new Path();
-        FacePath2 = facePaths.get(1); //TO_DO
+            Path FacePath2 = new Path();
+            FacePath2 = facePaths.get(1); //TO_DO
 
-        FacePath2.setFillType(Path.FillType.INVERSE_EVEN_ODD);
-        Bitmap cropped_bitmap_2 = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas cropped_canvas_2 = new Canvas(cropped_bitmap_2);
-        paint.setColor(Color.BLACK);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
-        paint.setAntiAlias(true);
-        cropped_canvas_2.drawPath(FacePath2,paint);
-        int [] all_old_pixels_2 = new int[cropped_bitmap_2.getHeight()*cropped_bitmap_2.getWidth()];
-        int [] all_background_pixels_2 = new int[bitmap.getHeight()*bitmap.getWidth()];
-        cropped_bitmap_2.getPixels(all_old_pixels_2, 0, cropped_bitmap_2.getWidth(), 0, 0, cropped_bitmap_2.getWidth(), cropped_bitmap_2.getHeight());
-        bitmap.getPixels(all_background_pixels_2, 0,  bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-        for (int i = 0; i < all_old_pixels_2.length; i++)
-        {
-            int  oldLocation = (int)(i-one_to_two_y*bitmap.getWidth()-one_to_two_x);
-            if(all_old_pixels_2[i] == Color.BLACK) {
-                if (oldLocation < all_background_pixels_2.length&&oldLocation>=0) {
-                    all_old_pixels_2[i] = all_background_pixels_2[oldLocation];
+            FacePath2.setFillType(Path.FillType.INVERSE_EVEN_ODD);
+            Bitmap cropped_bitmap_2 = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            Canvas cropped_canvas_2 = new Canvas(cropped_bitmap_2);
+            paint.setColor(Color.BLACK);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
+            paint.setAntiAlias(true);
+            cropped_canvas_2.drawPath(FacePath2, paint);
+            int[] all_old_pixels_2 = new int[cropped_bitmap_2.getHeight() * cropped_bitmap_2.getWidth()];
+            int[] all_background_pixels_2 = new int[bitmap.getHeight() * bitmap.getWidth()];
+            cropped_bitmap_2.getPixels(all_old_pixels_2, 0, cropped_bitmap_2.getWidth(), 0, 0, cropped_bitmap_2.getWidth(), cropped_bitmap_2.getHeight());
+            bitmap.getPixels(all_background_pixels_2, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+            for (int i = 0; i < all_old_pixels_2.length; i++) {
+                int oldLocation = (int) (i - one_to_two_y * bitmap.getWidth() - one_to_two_x);
+                if (all_old_pixels_2[i] == Color.BLACK) {
+                    if (oldLocation < all_background_pixels_2.length && oldLocation >= 0) {
+                        all_old_pixels_2[i] = all_background_pixels_2[oldLocation];
+                    }
                 }
             }
+            cropped_bitmap_2.setPixels(all_old_pixels_2, 0, cropped_bitmap_2.getWidth(), 0, 0, cropped_bitmap_2.getWidth(), cropped_bitmap_2.getHeight());
+
+            //twoFaceSwap(cropped_bitmap_1,cropped_bitmap_2,bitmap,0,1);
+
+
+            canvas.drawBitmap(cropped_bitmap_2, -one_to_two_x, -one_to_two_y, null);
+            // Now cropped_bitmap is a transparent version
+
+            canvas.translate(0, 200);
         }
-        cropped_bitmap_2.setPixels(all_old_pixels_2, 0, cropped_bitmap_2.getWidth(), 0, 0, cropped_bitmap_2.getWidth(), cropped_bitmap_2.getHeight());
-
-        //twoFaceSwap(cropped_bitmap_1,cropped_bitmap_2,bitmap,0,1);
-
-
-        canvas.drawBitmap(cropped_bitmap_2, -one_to_two_x, -one_to_two_y, null);
-        // Now cropped_bitmap is a transparent version
-
-        canvas.translate(0, 200);
-
         return bitmap;
     }
 

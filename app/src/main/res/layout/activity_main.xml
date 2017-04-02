@@ -19,8 +19,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Browse"
+        android:text="Change Face!"
         android:id="@+id/button1"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_blue_light"/>
 
 </RelativeLayout>
